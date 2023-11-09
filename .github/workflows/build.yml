@@ -20,13 +20,19 @@ jobs:
           java-version: '17'
 
       - name: Grant execute permission to gradlew
-        run: chmod +x ./gradlew  # 追加: 実行権限を与える
+        run: chmod +x ./gradlew
 
       - name: Build with Gradle
         run: ./gradlew build --info
 
+      - name: Archive files
+        uses: actions/upload-artifact@v2
+        with:
+          name: built-jar
+          path: ./build/libs/
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}  # YOUR_PERSONAL_ACCESS_TOKENには実際のアクセストークンを入力
+          personal_token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
           publish_dir: ./build/libs/
